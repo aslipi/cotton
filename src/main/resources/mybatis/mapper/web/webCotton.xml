@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhonghua.cotton.mapper.web.WebCottonMapper">
+
+	<!-- 棉花字段 -->
+	<sql id="quotationField">
+       batch_number
+      ,pick
+      ,type
+      ,price
+      ,number
+      ,weight
+      ,gross_weight
+      ,net_weight
+      ,tare_weight
+      ,weight_cer
+      ,quality_cer
+      ,color_level
+      ,length
+      ,strength
+      ,micron_value
+      ,long_integer
+      ,roll_process
+      ,resurgence
+      ,reflectivity
+      ,yellow_index
+      ,impurity
+      ,depository
+      ,process_unit
+      ,supplier
+      ,contacts
+      ,tel
+      ,address
+      ,inspection_date
+      ,create_time
+      ,state
+   </sql>
+
+	<!-- 棉包字段 -->
+	<sql id="qualityField">
+       bar_code
+      ,batch_number
+      ,weight
+      ,gross_weight
+      ,net_weight
+      ,tare_weight
+      ,color_level
+      ,length
+      ,strength
+      ,micron_value
+      ,long_integer
+      ,roll_process
+      ,resurgence
+      ,reflectivity
+      ,yellow_index
+      ,impurity
+      ,process_unit
+      ,inspection_date
+      ,create_time
+   </sql>
+
+	<!-- 分页条件查询棉花数据 -->
+	<select id="listQuotationPage" parameterType="java.util.HashMap"
+			resultType="com.zhonghua.cotton.model.CottonQuotation">
+		SELECT <include refid="quotationField"/> FROM CottonQuotation
+		<where>
+			state = 1
+			<if test="keyword != null and keyword !=''">
+				AND (batch_number LIKE concat(concat('%',#{keyword}),'%') OR
+					depository LIKE concat(concat('%',#{keyword}),'%') OR
+					process_unit LIKE concat(concat('%',#{keyword}),'%')
+				)
+			</if>
+			<if test="ph != null and ph !=''">
+				AND batch_number = #{ph}
+			</if>
+			<if test="cfck != null and cfck !=''">
+				AND depository LIKE concat(concat('%',#{cfck}),'%')
+			</if>
+			<if test="ztys != null and ztys !=''">
+				AND color_level in (
+				<foreach collection="ztys.split(';')" item="item" index="index" separator=",">
+					#{item}
+				</foreach>
+				)
+			</if>
+			<if test="cd_q != null and cd_q !=''">
+				AND length &gt; #{cd_q}
+			</if>
+			<if test="cd_z != null and cd_z !=''">
+				AND length &lt; #{cd_z}
+			</if>
+			<if test="mz_q != null and mz_q !=''">
+				AND micron_value &gt; #{mz_q}
+			</if>
+			<if test="mz_z != null and mz_z !=''">
+				AND micron_value &lt; #{mz_z}
+			</if>
+			<if test="dlbqd != null and dlbqd !=''">
+				AND strength &gt; #{dlbqd}
+			</if>
+			<if test="hz_q != null and hz_q !=''">
+				AND impurity &gt; #{hz_q}
+			</if>
+			<if test="hz_z != null and hz_z !=''">
+				AND impurity &lt; #{hz_z}
+			</if>
+			<if test="hc_q != null and hc_q !=''">
+				AND resurgence &gt; #{hc_q}
+			</if>
+			<if test="hc_z != null and hc_z !=''">
+				AND resurgence &lt; #{cd_z}
+			</if>
+		</where>
+		order by create_time LIMIT ${current},${pageSize}
+	</select>
+
+	<!-- 根据批号获取棉花 -->
+	<select id="getQuotation" parameterType="java.lang.String" resultType="com.zhonghua.cotton.model.CottonQuotation">
+		SELECT <include refid="quotationField"/> FROM CottonQuotation
+		WHERE batch_number = #{batchNumber} AND state = 1
+	</select>
+
+	<!-- 查询颜色级比例 -->
+	<select id="selectColorLevelRatio" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select color_level as colorlevel,
+			ROUND((count(color_level) / (select count(*) from cottonquality where batch_number = #{batchNumber}))*100,2) as ratio
+			from cottonquality where batch_number = #{batchNumber}
+			GROUP BY colorlevel
+	</select>
+
+	<!-- 查询长度比例 -->
+    <select id="selectLengthRatio" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select INTERVAL(length,26,27,28,29,30,31,32) as len,
+        ROUND((count(INTERVAL(length,3.5,3.6,4.3,5.0)) / (select count(*) from cottonquality where batch_number = #{batchNumber}))*100,2) as ratio
+        from cottonquality where batch_number = #{batchNumber}
+        group by len order by ratio desc
+	</select>
+
+	<!-- 查询长整最值 -->
+    <select id="selectLongIntegerMaxMin" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select MAX(long_integer) as maxli,MIN(long_integer) as minli
+        from cottonquality where batch_number = #{batchNumber}
+    </select>
+
+	<!-- 查询强力最值 -->
+    <select id="selectStrengthMaxMin" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select MAX(strength) as maxst,MIN(strength) as minst
+        from cottonquality where batch_number = #{batchNumber}
+    </select>
+
+	<!-- 查询轧工比例 -->
+    <select id="selectRollProcessRatio" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select roll_process as gq,
+        ROUND((count(roll_process) / (select count(*) from cottonquality where batch_number = #{batchNumber}))*100,2) as ratio
+        from cottonquality where batch_number = #{batchNumber}
+        GROUP BY gq
+    </select>
+
+	<!-- 查询马值比例 -->
+    <select id="selectMicronValueRatio" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select INTERVAL(micron_value,3.5,3.6,4.3,5.0) as mv,
+        ROUND((count(INTERVAL(micron_value,3.5,3.6,4.3,5.0)) / (select count(*) from cottonquality where batch_number = #{batchNumber}))*100,2) as ratio
+        from cottonquality where batch_number = #{batchNumber}
+        group by mv order by ratio desc
+    </select>
+
+	<!-- 根据批号查询棉包数据 -->
+    <select id="listQualityByBatchNumber" parameterType="java.lang.String" resultType="com.zhonghua.cotton.model.CottonQuality">
+        select qua.* from cottonquality qua LEFT JOIN cottonquotation quo ON qua.batch_number = quo.batch_number
+        where qua.batch_number = #{batchNumber} AND quo.state = 1
+    </select>
+
+
+</mapper>

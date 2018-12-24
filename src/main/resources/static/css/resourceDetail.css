@@ -1,0 +1,386 @@
+/* ç’§å‹¬ç°®ç’‡ï¸½å„ */
+@charset "utf-8";
+.topResou{
+	width:1198px;
+	margin:30px auto 50px;
+	border:1px solid #4abcfc;
+	height:178px;
+}
+.leftResou{
+	margin:20px 25px 20px 35px;
+}
+.firstResou{
+	height:32px;
+	line-height: 32px;
+	
+}
+.firstResou .resouPH{
+	color:#4abcfc;
+	font-size: 24px;
+	font-weight: bold;
+}
+.firstResou .resouMeth{
+	width:36px;
+	height:18px;
+	background:#ff625e;
+	margin:0 25px 0 15px;
+	color:#fff;
+	font-size: 12px;
+	text-align: center;
+	line-height: 18px;
+	margin-top:7px;
+}
+.firstResou .colle{
+	font-size: 16px;
+	color:#666;
+}
+.cenInto{
+	margin:11px 0;
+	height:24px;
+}
+.cenInto .rightMar{
+	margin-right:14px;
+	font-size:18px;
+}
+.rightMar .presty{
+	color:#666;
+}
+.rightMar .nextsty{
+	color:#333;
+}
+.facinter{
+	height:24px;
+}
+.saleman{
+	color:#a7a6a6;
+	font-size:18px;
+}
+.facinter .firinter{
+	margin-right:30px;
+}
+.marw{
+	height:24px;
+	margin-top:12px;
+}
+.malesa{
+	margin-right:34px;
+}
+.gonghuo{
+	margin-right:27px;
+	color:#4abcfc;
+	font-size:18px;
+}
+.flrttal{
+	height:32px;
+	margin-bottom:20px;
+}
+
+.gjsj{
+	color:#666;
+	font-size:18px;
+	line-height:32px;
+}
+.gjsjsecond{
+	color:#666;
+	font-size:18px;
+}
+/*é™æŠ½æ½°*/
+.rightBox{
+	margin-top:60px;
+}
+.company{
+	color:#666;
+	font-size:18px;
+}
+.company .unit{
+	color:#ff652e;
+	font-size:22px;
+}
+.settle{
+	margin:10px 0;
+}
+.locksupp{
+	width:105px;
+	height:30px;
+	text-align: center;
+	line-height: 30px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	background: #ff652e;
+	margin-left: 50px;
+}
+.locksupp:hover{
+	background: #4abcfc;
+}
+.locksupp .supgod{
+	color:#fff;
+	font-size: 16px;
+}
+.locksupp .shzyj{
+	float: left;
+	margin: 8px -7px 0 10px;
+}
+/*æ¶“î…žç¸¾ç’§å‹¬ç°®ç’‡ï¸½å„*/
+.surfacer{
+	width:1200px;
+	margin:0 auto;
+}
+.caption{
+	text-align: center;
+    color: #333;
+    font-size: 24px;
+}
+.caption .secsur{
+	margin:32px 0 18px 0;
+}
+/*
+.factily{
+	margin-bottom: 20px;
+}
+*/
+.factily .printbx{
+	width:81px;
+	height:30px;
+	border:1px solid #c3c3c3;
+	cursor: pointer;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	text-align: center;
+	line-height: 30px;
+	margin-right:10px;
+	float:left;
+}
+.printbx img{
+	float:left;
+	margin:7px -7px 0 14px;
+}
+.printbx a{
+	color:#666;
+	font-size: 16px;
+}
+.factily .orthpri{
+	width:118px;
+}
+.factily .noneri{
+	margin-right:0;
+}
+.factily .changefa{
+	border:1px solid #4abcfc;
+}
+.factily .changefa a{
+	color:#4abcfc;
+}
+.summar{
+	width:1200px;
+	margin:0 auto;
+	text-align: center;
+	border:1px solid #c3c3c3;
+}
+.summar td{
+	border-bottom: 1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	height:45px;
+	line-height: 45px;
+	color:#5f5f5f;
+	font-size: 18px;
+}
+.hejkl{
+	overflow:hidden;
+	margin-bottom:10px;
+	text-align:left;
+}
+.zhengti{
+	margin:0px auto; 
+	width:1000px;
+	marign-top:10px; 
+}
+.titwj{
+	text-align:center;
+	 padding-top:30px;
+	 margin-bottom:20px;
+}
+.cover{
+		width:1000px;
+		margin:0 auto;
+	}
+.chansty{
+		border:1px solid #030303;
+		width:1000px;
+		margin:0 auto;
+		text-align:center;
+}
+
+.tip_tiel{
+	font-size: 28px;
+	text-align: center;
+	text-indent: -180px;
+}
+.bot_tie{
+	font-size: 23px;
+	text-align: center;
+	text-indent: -180px;
+}
+.textxia span{
+	display: inline-block;
+	width:620px;
+	color: #5f5f5f;
+    font-size: 16px;
+	margin:0 0 10px 10px;
+}
+/* ç’§å‹¬ç°®å§¹å›¨ï¿½æ˜ã€ƒ */
+@media (man-width: 768px){ 
+	
+	.zhengti{
+		margin:0px auto; 
+		width:100%;
+		marign-top:10px; 
+	}
+	.titwj{
+		text-align:center;
+		 padding-top:30px;
+	}
+	.tip_tiel{
+		font-size: 2.2rem;
+		text-align: center;
+		text-indent: -180px;
+		}
+	.bot_tie{
+		font-size: 2rem;
+		text-align: center;
+		text-indent: -180px;
+	}
+	.rkrq{
+		font-size:1.8rem;
+	}
+	.cover{
+		width:100%;
+		margin:0 auto;
+		
+	}
+	.chansty{
+		border:1px solid #030303;
+		width:98%;
+		margin:0 auto;
+		text-align:center;
+	}
+	.chansty td{
+	border-bottom: 1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	height:60px;
+	line-height: 60px;
+	color:#5f5f5f;
+	font-size: 1.6rem;
+	}
+	.textxia span{
+		display: inline-block;
+	    width: 800px;
+	    color: #000;
+	    font-size: 1.2rem;
+	    margin: 0 0 10px 10px;
+	}
+} 
+.summar .wuri{
+	border-right:none;
+}
+
+.summar  .bgwhite{
+	background: #fff;
+}
+.summar .laststy td{
+	height:175px;
+	border-bottom: none;
+}
+.summar .textxia{
+	text-align: left;
+	line-height: 23px;
+}
+
+/*186é–å‘®æšŸéŽ¹ï¿½*/
+.tabl{
+	width:1200px;
+	margin:40px auto 50px ;
+}
+.tabl thead th{
+	height:50px;
+	line-height: 50px;
+	background: #d9f1fe;
+	color:#5f5f5f;
+	font-size: 20px;
+}
+.tabl tbody td{
+	height:50px;
+	line-height: 50px;
+	border-bottom:1px solid #c3c3c3;
+	color:#5f5f5f;
+	font-size: 16px;
+	text-align: center;
+}
+.tabl tbody .xuhao{
+	width:40px;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	box-sizing: border-box;
+}
+.tabl tbody .barcode{
+	width:350px;
+}
+.tabl tbody .lastli{
+	border-right:1px solid #c3c3c3;
+}
+/*éˆï¿½æ©æˆžç¥»ç‘™å î…¹éŽ´å³°æ‹°ç’§å‹¬ç°®éŽºã„¨å´˜*/
+.lastely{
+	width:1200px;
+	margin-bottom: 50px;
+	margin:0 auto;
+}
+.lastely thead th{
+	width:600px;
+	background:#d9f1fe;
+	height: 50px;
+	line-height: 50px;
+	text-align: left;
+	color:#5f5f5f;
+	font-size: 20px;
+}
+.lastely thead .iconsi{
+	float: left;
+    margin:18px 9px 0 24px;
+}
+.lastely tbody td{
+	height:40px;
+	line-height: 40px;
+	font-size: 16px;
+	border-bottom: 1px solid #c3c3c3;
+	text-indent: 24px;
+}
+.lastely tbody .custome{
+	border-left:1px solid #c3c3c3;
+}
+.lastely tbody .custome .pany{
+	color:#5f5f5f;
+	font-size:16px;
+}
+.lastely tbody .custome .pany:hover{
+	color:#4abcfc;
+}
+.lastely tbody .recomed{
+	border-right:1px solid #c3c3c3;
+	border-left:1px solid #c3c3c3;
+}
+.lastely tbody .recomed .pihaolian{
+	color:#4abcfc;
+	font-size: 16px;
+}
+.lastely tbody .recomed .pihaolian:hover{
+	color:#ffa248;
+}
+
+.lastely tbody .recomed .screcondi{
+	color:#5f5f5f;
+	margin-left:30px;
+}
+.lastely tbody .recomed .erical{
+	color:#333;
+}

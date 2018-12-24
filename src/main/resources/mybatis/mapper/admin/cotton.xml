@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhonghua.cotton.mapper.admin.CottonMapper">
+
+	<!-- 报价单批号字段 -->
+	<sql id="quotationField">
+       batch_number
+      ,pick
+      ,type
+      ,price
+      ,number
+      ,weight
+      ,gross_weight
+      ,net_weight
+      ,tare_weight
+      ,weight_cer
+      ,quality_cer
+      ,color_level
+      ,length
+      ,strength
+      ,micron_value
+      ,long_integer
+      ,roll_process
+      ,resurgence
+      ,reflectivity
+      ,yellow_index
+      ,impurity
+      ,depository
+      ,process_unit
+      ,supplier
+      ,contacts
+      ,tel
+      ,address
+      ,inspection_date
+      ,create_time
+      ,state
+   </sql>
+
+	<!-- 报价单条码字段 -->
+	<sql id="qualityField">
+       bar_code
+      ,batch_number
+      ,weight
+      ,gross_weight
+      ,net_weight
+      ,tare_weight
+      ,color_level
+      ,length
+      ,strength
+      ,micron_value
+      ,long_integer
+      ,roll_process
+      ,resurgence
+      ,reflectivity
+      ,yellow_index
+      ,impurity
+      ,process_unit
+      ,inspection_date
+      ,create_time
+   </sql>
+
+	<!-- 分页查询棉花数据 -->
+	<select id="selectCottonQuotationPage" parameterType="java.util.HashMap"
+			resultType="com.zhonghua.cotton.model.CottonQuotation">
+		SELECT id,<include refid="quotationField"/> FROM CottonQuotation
+		<where>
+			<if test="ph != null and ph !=''">
+				AND batch_number = #{ph}
+			</if>
+			<if test="cfck != null and cfck !=''">
+				AND depository LIKE concat(concat('%',#{cfck}),'%')
+			</if>
+			<if test="ztys != null and ztys !=''">
+				AND color_level in (
+				<foreach collection="ztys.split(';')" item="item" index="index" separator=",">
+					#{item}
+				</foreach>
+				)
+			</if>
+			<if test="cd_q != null and cd_q !=''">
+				AND length &gt; #{cd_q}
+			</if>
+			<if test="cd_z != null and cd_z !=''">
+				AND length &lt; #{cd_z}
+			</if>
+			<if test="mz_q != null and mz_q !=''">
+				AND micron_value &gt; #{mz_q}
+			</if>
+			<if test="mz_z != null and mz_z !=''">
+				AND micron_value &lt; #{mz_z}
+			</if>
+			<if test="dlbqd != null and dlbqd !=''">
+				AND strength &gt; #{dlbqd}
+			</if>
+			<if test="hz_q != null and hz_q !=''">
+				AND impurity &gt; #{hz_q}
+			</if>
+			<if test="hz_z != null and hz_z !=''">
+				AND impurity &lt; #{hz_z}
+			</if>
+			<if test="hc_q != null and hc_q !=''">
+				AND resurgence &gt; #{hc_q}
+			</if>
+			<if test="hc_z != null and hc_z !=''">
+				AND resurgence &lt; #{cd_z}
+			</if>
+		</where>
+		order by create_time LIMIT ${current},${pageSize}
+	</select>
+
+	<!-- 根据批号获取棉花 -->
+	<select id="getQuotation" parameterType="java.lang.String" resultType="com.zhonghua.cotton.model.CottonQuotation">
+		SELECT <include refid="quotationField"/> FROM CottonQuotation
+		WHERE batch_number = #{batchNumber}
+	</select>
+
+	<!-- 查询颜色级比例 -->
+	<select id="selectColorLevelRatio" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select color_level as colorlevel,
+			ROUND((count(color_level) / (select count(*) from cottonquality where batch_number = #{batchNumber}))*100,2) as ratio
+			from cottonquality where batch_number = #{batchNumber}
+			GROUP BY colorlevel
+	</select>
+
+	<!-- 查询长度比例 -->
+	<select id="selectLengthRatio" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select INTERVAL(length,26,27,28,29,30,31,32) as len,
+        ROUND((count(INTERVAL(length,3.5,3.6,4.3,5.0)) / (select count(*) from cottonquality where batch_number = #{batchNumber}))*100,2) as ratio
+        from cottonquality where batch_number = #{batchNumber}
+        group by len ORDER BY ratio DESC
+	</select>
+
+	<!-- 查询长整最值 -->
+	<select id="selectLongIntegerMaxMin" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select MAX(long_integer) as maxli,MIN(long_integer) as minli
+        from cottonquality where batch_number = #{batchNumber}
+    </select>
+
+	<!-- 查询强力最值 -->
+	<select id="selectStrengthMaxMin" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select MAX(strength) as maxst,MIN(strength) as minst
+        from cottonquality where batch_number = #{batchNumber}
+    </select>
+
+	<!-- 查询轧工比例 -->
+	<select id="selectRollProcessRatio" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select roll_process as gq,
+        ROUND((count(roll_process) / (select count(*) from cottonquality where batch_number = #{batchNumber}))*100,2) as ratio
+        from cottonquality where batch_number = #{batchNumber}
+        GROUP BY gq
+    </select>
+
+	<!-- 查询马值比例 -->
+	<select id="selectMicronValueRatio" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select INTERVAL(micron_value,3.5,3.6,4.3,5.0) as mv,
+        ROUND((count(INTERVAL(micron_value,3.5,3.6,4.3,5.0)) / (select count(*) from cottonquality where batch_number = #{batchNumber}))*100,2) as ratio
+        from cottonquality where batch_number = #{batchNumber}
+        group by mv order by ratio desc
+    </select>
+
+	<!-- 根据批号查询棉包 -->
+	<select id="listQualityByBatchNumber" parameterType="java.lang.String" resultType="com.zhonghua.cotton.model.CottonQuality">
+		select <include refid="qualityField"/> from cottonquality where batch_number = #{batchNumber}
+	</select>
+
+	<!-- 条件查询棉花总记录数 -->
+	<select id="selectCottonQuotationCount" parameterType="java.util.HashMap"
+			resultType="java.lang.Integer">
+		SELECT COUNT(id) FROM CottonQuotation
+		<where>
+			<if test="ph != null and ph !=''">
+				AND batch_number = #{ph}
+			</if>
+			<if test="cfck != null and cfck !=''">
+				AND depository LIKE concat(concat('%',#{cfck}),'%')
+			</if>
+			<if test="ztys != null and ztys !=''">
+				AND color_level in (
+				<foreach collection="ztys.split(';')" item="item" index="index" separator=",">
+					#{item}
+				</foreach>
+				)
+			</if>
+			<if test="cd_q != null and cd_q !=''">
+				AND length &gt; #{cd_q}
+			</if>
+			<if test="cd_z != null and cd_z !=''">
+				AND length &lt; #{cd_z}
+			</if>
+			<if test="mz_q != null and mz_q !=''">
+			  	AND micron_value &gt; #{mz_q}
+			</if>
+			<if test="mz_z != null and mz_z !=''">
+				AND micron_value &lt; #{mz_z}
+			</if>
+			<if test="dlbqd != null and dlbqd !=''">
+				AND strength &gt; #{dlbqd}
+			</if>
+			<if test="hz_q != null and hz_q !=''">
+			  	AND impurity &gt; #{hz_q}
+			</if>
+			<if test="hz_z != null and hz_z !=''">
+				AND impurity &lt; #{hz_z}
+			</if>
+			<if test="hc_q != null and hc_q !=''">
+				AND resurgence &gt; #{hc_q}
+			</if>
+			<if test="hc_z != null and hc_z !=''">
+				AND resurgence &lt; #{cd_z}
+			</if>
+			<if test="price_q != null and price_q !=''">
+				AND price &gt; #{price_q}
+			</if>
+			<if test="price_z != null and price_z !=''">
+				AND price &lt; #{price_z}
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据批号查询棉花是否存在 -->
+	<select id="selectByBatchNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM CottonQuotation WHERE batch_number = #{number}
+	</select>
+
+	<!-- 根据条码查询棉包数据是否存在 -->
+	<select id="selectByBarCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM CottonQuality WHERE bar_code = #{code}
+	</select>
+
+	<!-- 查询棉花各种数值 -->
+	<select id="avgQualityByBatchNumber" parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT batch_number,SUM(weight) weight,SUM(gross_weight) gw,
+				SUM(net_weight) nw,SUM(tare_weight) tw,
+				selectCottonPick(batch_number) pick,selectCottonType(batch_number) type,
+				selectMaxColor(batch_number) cl,
+				selectCountQua(batch_number) num, round(AVG(length),2) len,
+				round(AVG(strength),2) stre, round(AVG(micron_value),2) mv,
+				round(AVG(long_integer),2) li, round(AVG(resurgence),2) res,
+				round(AVG(reflectivity),2) ref, round(AVG(yellow_index),2) yi,
+				round(AVG(impurity),2) imp, selectMaxQua(batch_number) rp
+		FROM cottonquality GROUP BY batch_number HAVING batch_number = #{batchNumber}
+	</select>
+
+	<!-- 添加棉花数据 -->
+	<insert id="saveQuotation" parameterType="com.zhonghua.cotton.model.CottonQuotation"  useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO CottonQuotation (
+			<include refid="quotationField"/>
+		) VALUES (
+			 #{batchNumber}
+			,#{pick}
+			,#{type}
+			,#{price}
+			,#{number}
+			,#{weight}
+			,#{grossWeight}
+			,#{netWeight}
+			,#{tareWeight}
+			,#{weightCer}
+			,#{qualityCer}
+			,#{colorLevel}
+			,#{length}
+			,#{strength}
+			,#{micronValue}
+			,#{longInteger}
+			,#{rollProcess}
+			,#{resurgence}
+			,#{reflectivity}
+			,#{yellowIndex}
+			,#{impurity}
+			,#{depository}
+			,#{processUnit}
+			,#{supplier}
+			,#{contacts}
+			,#{tel}
+			,#{address}
+		    ,#{inspectionDate}
+			,#{createTime}
+			,#{state}
+		)
+	</insert>
+
+	<!-- 添加棉包数据 -->
+	<insert id="saveQuality" parameterType="com.zhonghua.cotton.model.CottonQuality"  useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO CottonQuality (
+		<include refid="qualityField"/>
+		) VALUES (
+		 #{barCode}
+		,#{batchNumber}
+		,#{weight}
+		,#{grossWeight}
+		,#{netWeight}
+		,#{tareWeight}
+		,#{colorLevel}
+		,#{length}
+		,#{strength}
+		,#{micronValue}
+		,#{longInteger}
+		,#{rollProcess}
+		,#{resurgence}
+		,#{reflectivity}
+		,#{yellowIndex}
+		,#{impurity}
+		,#{processUnit}
+		,#{inspectionDate}
+		,#{createTime}
+		)
+	</insert>
+
+	<!-- 更新棉花数据 -->
+	<update id="updateQuotation" parameterType="com.zhonghua.cotton.model.CottonQuotation">
+		UPDATE CottonQuotation
+		<set>
+			<if test="pick != null">
+				pick = #{pick},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="price != null">
+				price = #{price},
+			</if>
+			<if test="number != null">
+				number = #{number},
+			</if>
+			<if test="weight != null">
+				weight = #{weight},
+			</if>
+			<if test="grossWeight != null">
+				gross_weight = #{grossWeight},
+			</if>
+			<if test="netWeight != null">
+				net_weight = #{netWeight},
+			</if>
+			<if test="tareWeight != null">
+				tare_weight = #{tareWeight},
+			</if>
+			<if test="weightCer != null">
+				weight_cer = #{weightCer},
+			</if>
+			<if test="qualityCer != null">
+				quality_cer = #{qualityCer},
+			</if>
+			<if test="colorLevel != null">
+				color_level = #{colorLevel},
+			</if>
+			<if test="length != null">
+				length = #{length},
+			</if>
+			<if test="strength != null">
+				strength = #{strength},
+			</if>
+			<if test="micronValue != null">
+				micron_value = #{micronValue},
+			</if>
+			<if test="longInteger != null">
+				long_integer = #{longInteger},
+			</if>
+			<if test="rollProcess != null">
+				roll_process = #{rollProcess},
+			</if>
+			<if test="resurgence != null">
+				resurgence = #{resurgence},
+			</if>
+			<if test="reflectivity != null">
+				reflectivity = #{reflectivity},
+			</if>
+			<if test="yellowIndex != null">
+				yellow_index = #{yellowIndex},
+			</if>
+			<if test="impurity != null">
+				impurity = #{impurity},
+			</if>
+			<if test="depository != null">
+				depository = #{depository},
+			</if>
+			<if test="processUnit != null">
+				process_unit = #{processUnit},
+			</if>
+			<if test="supplier != null">
+				supplier = #{supplier},
+			</if>
+			<if test="contacts != null">
+				contacts = #{contacts},
+			</if>
+			<if test="tel != null">
+				tel = #{tel},
+			</if>
+			<if test="address != null">
+				address = #{address},
+			</if>
+			<if test="inspectionDate != null">
+				inspection_date = #{inspectionDate},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+		</set>
+		<where>
+			batch_number = #{batchNumber}
+		</where>
+	</update>
+
+	<!-- 更新棉包数据 -->
+	<update id="updateQuality" parameterType="com.zhonghua.cotton.model.CottonQuality">
+		UPDATE CottonQuality
+		<set>
+			<if test="batchNumber != null">
+				batch_number = #{batchNumber},
+			</if>
+			<if test="weight != null">
+				weight = #{weight},
+			</if>
+			<if test="grossWeight != null">
+				gross_weight = #{grossWeight},
+			</if>
+			<if test="netWeight != null">
+				net_weight = #{netWeight},
+			</if>
+			<if test="tareWeight != null">
+				tare_weight = #{tareWeight},
+			</if>
+			<if test="colorLevel != null">
+				color_level = #{colorLevel},
+			</if>
+			<if test="length != null">
+				length = #{length},
+			</if>
+			<if test="strength != null">
+				strength = #{strength},
+			</if>
+			<if test="micronValue != null">
+				micron_value = #{micronValue},
+			</if>
+			<if test="longInteger != null">
+				long_integer = #{longInteger},
+			</if>
+			<if test="rollProcess != null">
+				roll_process = #{rollProcess},
+			</if>
+			<if test="resurgence != null">
+				resurgence = #{resurgence},
+			</if>
+			<if test="reflectivity != null">
+				reflectivity = #{reflectivity},
+			</if>
+			<if test="yellowIndex != null">
+				yellow_index = #{yellowIndex},
+			</if>
+			<if test="impurity != null">
+				impurity = #{impurity},
+			</if>
+			<if test="processUnit != null">
+				process_unit = #{processUnit},
+			</if>
+			<if test="inspectionDate != null">
+				inspection_date = #{inspectionDate},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+		</set>
+		<where>
+			bar_code = #{barCode}
+		</where>
+	</update>
+
+	<!-- 删除棉花数据 -->
+	<delete id="removeQuotation" parameterType="java.lang.String">
+		DELETE FROM cottonquotation WHERE id IN (
+		<foreach collection="ids.split(',')" item="item" index="index" separator=",">
+			CONVERT(#{item},SIGNED)
+		</foreach>
+		)
+	</delete>
+
+	<!-- 更新棉花状态 -->
+	<update id="updateQuotationState">
+		UPDATE cottonquotation SET state = #{state} WHERE id IN (
+		<foreach collection="ids.split(',')" item="item" index="index" separator=",">
+			CONVERT(#{item},SIGNED)
+		</foreach>
+		)
+	</update>
+
+</mapper>
