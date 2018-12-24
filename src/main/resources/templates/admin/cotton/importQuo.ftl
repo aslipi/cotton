@@ -10,8 +10,8 @@
         <script type="text/javascript" src="/js/fancyBox/jquery.easing.1.3.js"></script>
         <script type="text/javascript" src="/js/fancyBox/jquery.fancybox-1.2.1.js"></script>
 
-        <script type="text/javascript" src="/public/js/public.js"></script>
-        <script type="text/javascript" src="/public/js/labelauty.js"></script>
+        <script type="text/javascript" src="/js/public/public.js"></script>
+        <script type="text/javascript" src="/js/public/labelauty.js"></script>
         <script type="text/javascript">
 
             function getFullPath(obj) {

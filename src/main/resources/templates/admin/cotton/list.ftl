@@ -8,7 +8,7 @@
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/js/layer.js"></script>
-    <link rel="stylesheet" href="http://www.emiancang.com/public/includes/layer-v2.4/layer/skin/layer.css" id="layui_layer_skinlayercss" style="">
+    <link rel="stylesheet" href="/css/layer/layer.css" id="layui_layer_skinlayercss" style="">
     <script type="text/javascript" src="/js/cszyMgr.js"></script>
 
     <script type="text/javascript" src="/js/alertMessage.js"></script>

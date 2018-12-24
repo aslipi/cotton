@@ -88,7 +88,7 @@
                                         <div ref="list" class="list" style="overflow-y:scroll" v-bind:style=" {height: scrollHeight} ">
 											<div class="scroll" style="transform: translate3d(0px, 0px, 0px) scale(1);">
 				                                <div ref="content" class="exam-content">
-				                                	<div v-for="(item,index) in list" style="margin: 2px;">
+				                                	<div v-for="(item,index) in list" style="margin: 5px;">
 										   				<div class="exam-person">
 													        <h2>批号：{{item.batchNumber}}&nbsp;&nbsp;&nbsp;&nbsp;
 																<span style='font-size:15px;'>价格：{{item.price}}(元/吨)</span>
