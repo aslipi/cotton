@@ -164,8 +164,8 @@ public class CottonServiceImpl implements CottonService {
             quotationList.add(quotation);
         }
         for (CottonQuotation item : quotationList) {
-            String number = item.getBatchNumber();
-            int cnt = cottonMapper.selectByBatchNumber(number);
+            String batchNumber = item.getBatchNumber();
+            int cnt = cottonMapper.countQuotationByBatchNumber(batchNumber);
             if (cnt == 0) {
                 cottonMapper.saveQuotation(item);
                 System.out.println(" 插入 "+item);
@@ -315,7 +315,7 @@ public class CottonServiceImpl implements CottonService {
         }
         for (CottonQuality item : qualityList) {
             String code = item.getBarCode();
-            int cnt = cottonMapper.selectByBarCode(code);
+            int cnt = cottonMapper.countQuatityByBarCode(code);
             if (cnt == 0) {
                 cottonMapper.saveQuality(item);
             } else {
@@ -382,5 +382,69 @@ public class CottonServiceImpl implements CottonService {
     @Override
     public void updateQuotationState(String ids, int state) {
         cottonMapper.updateQuotationState(ids,state);
+    }
+
+    @Override
+    public int countQualityByBatchNumber(String batchNumber) {
+        int i = cottonMapper.countQualityByBatchNumber(batchNumber);
+        return i;
+    }
+
+    @Override
+    public int countQuotationByBatchNumber(String batchNumber) {
+        int i = cottonMapper.countQuotationByBatchNumber(batchNumber);
+        return i;
+    }
+
+    @Override
+    public HashMap avgQualityByBatchNumber(String batchNumber) {
+        HashMap map = cottonMapper.avgQualityByBatchNumber(batchNumber);
+        return map;
+    }
+
+    @Override
+    public String saveQuotation(CottonQuotation quotation) {
+        String batchNumber = quotation.getBatchNumber();
+        int cnt = cottonMapper.countQuotationByBatchNumber(batchNumber);
+        HashMap map = cottonMapper.avgQualityByBatchNumber(batchNumber);
+        quotation.setCreateTime(new Date());
+        quotation.setWeight(new BigDecimal(map.get("weight").toString()));
+        quotation.setGrossWeight(new BigDecimal(map.get("gw").toString()));
+        quotation.setNetWeight(new BigDecimal(map.get("nw").toString()));
+        quotation.setTareWeight(new BigDecimal(map.get("tw").toString()));
+        quotation.setPick(map.get("pick").toString());
+        quotation.setType(map.get("type").toString());
+        quotation.setColorLevel(map.get("cl").toString());
+        quotation.setNumber(Integer.valueOf(map.get("num").toString()));
+        quotation.setBatchNumber(map.get("batch_number").toString());
+        quotation.setLength(map.get("len").toString());
+        quotation.setStrength(map.get("stre").toString());
+        quotation.setMicronValue(map.get("mv").toString());
+        quotation.setLongInteger(map.get("li").toString());
+        quotation.setImpurity(map.get("imp").toString());
+        quotation.setReflectivity(map.get("ref").toString());
+        quotation.setResurgence(map.get("res").toString());
+        quotation.setRollProcess(map.get("rp").toString());
+        quotation.setYellowIndex(map.get("yi").toString());
+        quotation.setState(0);
+        if (cnt == 0) {
+            cottonMapper.saveQuotation(quotation);
+            return "0";
+        }else{
+            return "1";
+        }
+    }
+
+    @Override
+    public String updateQuotation(CottonQuotation quotation) {
+        String batchNumber = quotation.getBatchNumber();
+        cottonMapper.updateQuotation(quotation);
+        return "0";
+    }
+
+    @Override
+    public CottonQuotation findQuotationById(Integer id) {
+        CottonQuotation quotation = cottonMapper.findQuotationById(id);
+        return quotation;
     }
 }

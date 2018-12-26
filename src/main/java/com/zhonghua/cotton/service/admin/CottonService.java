@@ -37,4 +37,16 @@ public interface CottonService {
     public List<CottonQuality> listQualityByBatchNumber(String batchNumber);
 
     public void updateQuotationState(String ids,int state);
+
+    public int countQualityByBatchNumber(String batchNumber);
+
+    public int countQuotationByBatchNumber(String batchNumber);
+
+    public HashMap avgQualityByBatchNumber(String batchNumber);
+
+    public String saveQuotation(CottonQuotation quotation);
+
+    public String updateQuotation(CottonQuotation quotation);
+
+    public CottonQuotation findQuotationById(Integer id);
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhonghua.cotton.mapper.admin.UserMapper">
+
+	<!-- 报价单批号字段 -->
+	<sql id="userField">
+		username
+		,password
+		,salt
+		,create_time
+		,update_time
+		,del_flag
+		,lock_flag
+		,phone
+    	,avatar
+		,dept_id
+   </sql>
+
+	<select id="authUser" parameterType="com.zhonghua.cotton.model.SysUser" resultType="com.zhonghua.cotton.model.SysUser">
+		SELECT <include refid="userField"/> FROM sysuser
+				WHERE username = #{username} AND password = #{password}
+						AND del_flag = "0" AND lock_flag = "0"
+	</select>
+
+</mapper>

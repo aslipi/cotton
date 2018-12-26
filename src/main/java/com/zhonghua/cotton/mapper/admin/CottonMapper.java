@@ -18,7 +18,7 @@ public interface CottonMapper {
     public List<CottonQuotation> selectCottonQuotationPage(Map<String, Object> params);
 
     //根据批号查询棉花是否存在
-    public int selectByBatchNumber(String number);
+    public int countQuotationByBatchNumber(String batchNumber);
 
     //添加棉花数据
     public void saveQuotation(CottonQuotation list);
@@ -30,7 +30,7 @@ public interface CottonMapper {
     public int selectCottonQuotationCount(Map<String, Object> params);
 
     //根据条码查询棉包数据是否存在
-    public int selectByBarCode(String code);
+    public int countQuatityByBarCode(String barCode);
 
     //添加棉包数据
     public void saveQuality(CottonQuality item);
@@ -70,4 +70,10 @@ public interface CottonMapper {
 
     //更新棉花状态
     public void updateQuotationState(@Param("ids")String ids, @Param("state")int state);
+
+    //根据批号查询棉包是否存在
+    public int countQualityByBatchNumber(String batchNumber);
+
+    //根据id查询棉花是否存在
+    public CottonQuotation findQuotationById(Integer id);
 }

@@ -115,6 +115,12 @@
 		WHERE batch_number = #{batchNumber}
 	</select>
 
+	<!-- 根据批号获取棉花 -->
+	<select id="findQuotationById" parameterType="java.lang.Integer" resultType="com.zhonghua.cotton.model.CottonQuotation">
+		SELECT <include refid="quotationField"/> FROM CottonQuotation
+		WHERE id = #{id}
+	</select>
+
 	<!-- 查询颜色级比例 -->
 	<select id="selectColorLevelRatio" parameterType="java.lang.String" resultType="java.util.HashMap">
 		select color_level as colorlevel,
@@ -219,13 +225,18 @@
 	</select>
 
 	<!-- 根据批号查询棉花是否存在 -->
-	<select id="selectByBatchNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
-		SELECT COUNT(*) FROM CottonQuotation WHERE batch_number = #{number}
+	<select id="countQuotationByBatchNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM CottonQuotation WHERE batch_number = #{batchNumber}
+	</select>
+
+	<!-- 根据批号查询棉花是否存在 -->
+	<select id="countQualityByBatchNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM CottonQuality WHERE batch_number = #{batchNumber}
 	</select>
 
 	<!-- 根据条码查询棉包数据是否存在 -->
-	<select id="selectByBarCode" parameterType="java.lang.String" resultType="java.lang.Integer">
-		SELECT COUNT(*) FROM CottonQuality WHERE bar_code = #{code}
+	<select id="countQuatityByBarCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM CottonQuality WHERE bar_code = #{barCode}
 	</select>
 
 	<!-- 查询棉花各种数值 -->

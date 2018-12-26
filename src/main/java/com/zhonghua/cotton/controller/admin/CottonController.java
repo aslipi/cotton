@@ -104,6 +104,61 @@ public class CottonController {
         return  "/admin/common/msg";
     }
 
+    @RequestMapping("/addXzph")
+    public String addXzph(HttpServletRequest req) {
+        return  "/admin/cotton/add_xzph";
+    }
+
+    @RequestMapping("/xzph")
+    @ResponseBody
+    public String xzph(String batchNumber, HttpServletRequest req, HttpServletResponse res){
+        int i = cottonService.countQualityByBatchNumber(batchNumber);
+        int j = cottonService.countQuotationByBatchNumber(batchNumber);
+        if(j>0){
+            return "1";
+        }else if(i>0){
+            return "2";
+        }else{
+            return "0";
+        }
+
+    }
+
+    @RequestMapping("/goAdd")
+    public String addZlxq(String batchNumber , HttpServletRequest req) {
+        HashMap map = cottonService.avgQualityByBatchNumber(batchNumber);
+        req.setAttribute("item",map);
+        req.setAttribute("batchNumber",batchNumber);
+        req.setAttribute("msg","save");
+        return  "/admin/cotton/edit";
+    }
+
+    @RequestMapping("/goUpdate")
+    public String goUpdate(Integer id , HttpServletRequest req) {
+        CottonQuotation quotation = cottonService.findQuotationById(id);
+        HashMap map = cottonService.avgQualityByBatchNumber(quotation.getBatchNumber());
+
+        req.setAttribute("item",map);
+        req.setAttribute("quotation",quotation);
+        req.setAttribute("batchNumber",quotation.getBatchNumber());
+        req.setAttribute("msg","update");
+        return  "/admin/cotton/edit";
+    }
+
+    @RequestMapping("/save")
+    @ResponseBody
+    public String save(CottonQuotation quotation, HttpServletRequest req, HttpServletResponse res){
+        String s = cottonService.saveQuotation(quotation);
+        return s;
+    }
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public String update(CottonQuotation quotation, HttpServletRequest req, HttpServletResponse res){
+        String s = cottonService.updateQuotation(quotation);
+        return s;
+    }
+
     @RequestMapping("/release")
     @ResponseBody
     public String release(String ids, HttpServletRequest req, HttpServletResponse res){

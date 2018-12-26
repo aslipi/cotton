@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>e棉仓超市资源管理-国产棉</title>
+    <title>棉仓管理</title>
     <link href="/css/v_basic.css" rel="stylesheet" type="text/css">
     <link href="/css/v_style.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/css/v_member-css.css" type="text/css">
@@ -191,11 +191,11 @@
 
 <body>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="Keywords" content="e棉仓">
-    <meta name="Description" content="e棉仓">
+    <meta name="Keywords" content="棉仓管理">
+    <meta name="Description" content="棉仓管理">
     <meta http-equiv="x-ua-compatible" content="IE=EmulateIE8">
 
-    <title>忠华集团-报价单管理系统</title>
+    <title>棉仓管理系统</title>
     <link rel="stylesheet" href="/css/public.css">
     <script type="text/javascript">
         $(function () {
@@ -215,8 +215,8 @@
                 <div class="top_left">
                     <p class="welcome">欢迎！</p>
                     <div class="fr">
-                        <span class="loginw">admin</span>
-                        <span class="regist"><a href="#">退出</a></span>
+                        <span class="loginw">${loginUser.username}</span>
+                        <span class="regist"><a href="/logout">退出</a></span>
                     </div>
                 </div>
                 <div class="top_right">
@@ -390,6 +390,9 @@
                     </div>
                     <div class="list-title-new" style="float:right">
                         <span class="button-add-info">
+                            <a href="javascript:func('新增');">新增</a>
+                        </span>
+                        <span class="button-add-info">
                             <a href="javascript:func('发布');">发布</a>
                         </span>
                         <span class="button-add-info">
@@ -399,10 +402,7 @@
                             <a href="javascript:func('导入条码');">导入条码</a>
                         </span>
                         <span class="button-add-info">
-                            <a href="javascript:func('修改价格');">修改价格</a>
-                        </span>
-                        <span class="button-add-info">
-                            <a href="javascript:func('修改仓库');">修改仓库</a>
+                            <a href="javascript:func('修改');">修改</a>
                         </span>
                         <span class="button-add-info">
                             <a href="javascript:func('取消发布');">取消发布</a>
@@ -502,6 +502,10 @@
                             n++;
                         }
                     }
+                    if (p == '新增') {
+                        openUrl("/admin/cotton/addXzph",p+'资源')
+                        return;
+                    }
                     if (p == '导入批号') {
                         openUrl("/admin/cotton/goImportQuo",p+'资源')
                         return;
@@ -512,11 +516,13 @@
                     }
                     if (!id == '') {
                         id = id.substring(0,id.length-1)
-                        if (p =='修改价格') {
-                            openUrl("/work/cszyMgr/modify_cszy.jsp?oper=1&plxgcp="+product_id,p+'资源')
-                        }
-                        if (p =='修改仓库') {
-                            openUrl("/work/cszyMgr/modify_cszy.jsp?oper=2&plxgcp="+product_id,p+'资源')
+                        if (p == '修改') {
+                            if(n>1){
+                                layer.alert("只能选择一个");
+                            }else{
+                                openUrl("/admin/cotton/goUpdate?id="+id,p+'资源')
+                            }
+                            return;
                         }
                         if (p == '发布') {
                             layer.confirm('您选择了'+(n)+'批资源，确定要发布?', function(index){
@@ -615,10 +621,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=0.3, maximum-scale=2.0, minimum-scale=0.1">
 
-        <meta name="Keywords" content="e棉仓">
-        <meta name="Description" content="e棉仓">
+        <meta name="Keywords" content="棉仓管理">
+        <meta name="Description" content="棉仓管理">
         <meta http-equiv="x-ua-compatible" content="IE=EmulateIE8">
-        <title>e棉仓-资源平台</title>
+        <title>棉仓管理系统</title>
         <link rel="stylesheet" href="/css/public.css">
         <link rel="stylesheet" href="/css/index.css">
 

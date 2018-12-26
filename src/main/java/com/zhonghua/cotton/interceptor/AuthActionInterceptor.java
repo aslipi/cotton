@@ -4,11 +4,13 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.zhonghua.cotton.model.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Component
 public class AuthActionInterceptor implements HandlerInterceptor {
@@ -19,10 +21,8 @@ public class AuthActionInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String uri = request.getRequestURI();
-		System.out.println(uri+"--------------");
-		return true;
-		/*if (uri == null) {
+		SysUser user = UserContext.getUser();
+		if (user == null) {
 			String url = request.getRequestURL().toString();
 			if(request.getQueryString()!=null) {
 				url += "?"+request.getQueryString();
@@ -38,7 +38,8 @@ public class AuthActionInterceptor implements HandlerInterceptor {
 				response.sendRedirect("/login");
 				return false;//修复bug,未登录要返回false
 			}
-		}*/
+		}
+		return true;
 	}
 
 	@Override
