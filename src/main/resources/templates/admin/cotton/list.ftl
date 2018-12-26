@@ -231,7 +231,7 @@
     <div class="lodoarea">
         <div class="leftbufen">
             <a href="#"></a>
-            <h2>报价单管理-<span>忠华集团</span></h2>
+            <h2>棉仓管理-<span>忠华集团</span></h2>
         </div>
     </div>
     <!-- 主体部分 -->
