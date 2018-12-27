@@ -7,7 +7,7 @@
 		body{font: 12px Arial,"PingFang SC","Hiragino Sans GB",STHeiti,"Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;}
     	.noselect{background: #e8e8e8;} 
     	.exam-person h2{width: 98%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-		.exam-person h2 button{background-color: #e66700;border: 1px;border-radius: 5px;color: white;float: right;margin-top: 5px;}
+		.exam-person h2 button{background-color: #e66700;border: 1px;border-radius: 5px;color: white;float: right;}
     	.exam-person span{font-size:12px;}
     	select {border: solid 1px #dadada;
 				appearance:none;
@@ -91,7 +91,7 @@
 				                                	<div v-for="(item,index) in list" style="margin: 5px;">
 										   				<div class="exam-person">
 													        <h2>批号：{{item.batchNumber}}&nbsp;&nbsp;&nbsp;&nbsp;
-																<span style='font-size:15px;'>价格：{{item.price}}(元/吨)</span>
+																<span style='font-size:14px;'>价格：{{item.price}}(元/吨)</span>
 																<button @click="goDesc(item.batchNumber)">查看</button>
 															</h2>
 													        <p style="color: #666">供应商：{{item.supplier}}</p>
